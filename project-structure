@@ -1,0 +1,18 @@
+e-learning-platform/
+├── client/                 # Frontend (React)
+│   ├── public/
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── context/
+│       ├── assets/
+│       └── utils/
+│
+├── server/                 # Backend (Node.js + Express)
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   └── config/
+│
+└── README.md
