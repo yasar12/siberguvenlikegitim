@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr" class="bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Admin Paneli</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f2ff',
+                        'cyber-dark': '#0a192f',
+                        'cyber-gray': '#1a1a1a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <!-- Admin Navbar -->
+    <nav class="bg-cyber-gray border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/admin" class="text-cyber-blue font-bold text-xl">
+                            <i class="fas fa-shield-alt mr-2"></i>Admin Paneli
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="/admin" class="border-transparent text-gray-400 hover:border-gray-300 hover:text-gray-300 border-b-2 px-1 pt-1 text-sm font-medium">
+                            Ana Sayfa
+                        </a>
+                        <a href="/admin/pathway/add" class="border-cyber-blue text-cyber-blue border-b-2 px-1 pt-1 text-sm font-medium">
+                            Yeni Pathway Ekle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Ana İçerik -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-cyber-gray rounded-xl border border-gray-800 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-800">
+                <h3 class="text-xl font-semibold text-gray-300">Yeni Pathway Ekle</h3>
+            </div>
+            <div class="p-6">
+                <form action="/admin/pathway/add" method="POST" class="space-y-6">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Başlık</label>
+                        <input type="text" id="title" name="title" required
+                            class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Açıklama</label>
+                        <textarea id="description" name="description" rows="3" required
+                            class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent"></textarea>
+                    </div>
+
+                    <div>
+                        <label for="level" class="block text-sm font-medium text-gray-300 mb-1">Seviye</label>
+                        <select id="level" name="level" required
+                            class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent">
+                            <option value="">Seviye seçin</option>
+                            <option value="beginner">Başlangıç</option>
+                            <option value="intermediate">Orta</option>
+                            <option value="advanced">İleri</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="duration_weeks" class="block text-sm font-medium text-gray-300 mb-1">Süre (Hafta)</label>
+                        <input type="number" id="duration_weeks" name="duration_weeks" min="1" required
+                            class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent">
+                        <p class="mt-1 text-sm text-gray-400">Pathway'in tahmini tamamlanma süresi (hafta olarak)</p>
+                    </div>
+
+                    <div>
+                        <label for="image_url" class="block text-sm font-medium text-gray-300 mb-1">Resim URL</label>
+                        <input type="url" id="image_url" name="image_url"
+                            class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent">
+                        <p class="mt-1 text-sm text-gray-400">Pathway için bir resim URL'si girin. Boş bırakılabilir.</p>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <button type="submit" 
+                            class="flex-1 px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-medium hover:bg-cyber-blue/90 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200">
+                            <i class="fas fa-plus mr-2"></i>Pathway Ekle
+                        </button>
+                        <a href="/admin" 
+                            class="flex-1 px-4 py-2 border border-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200 text-center">
+                            <i class="fas fa-times mr-2"></i>İptal
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

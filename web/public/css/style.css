@@ -1,0 +1,2230 @@
+/* Temel Stiller */
+:root {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --accent: #4CAF50;
+    --accent-hover: rgba(76, 175, 80, 0.1);
+    --border: #404040;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.dark-theme {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --accent: #4CAF50;
+    --accent-hover: rgba(76, 175, 80, 0.1);
+    --border: #404040;
+}
+
+/* Genel Stiller */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    background-color: #0a192f;
+    color: #8892b0;
+    min-height: 100vh;
+}
+
+/* Header ve Navigasyon */
+header {
+    background-color: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 2rem;
+}
+
+nav {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo a {
+    color: #64ffda;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #ccd6f6;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #64ffda;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #64ffda;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Ana İçerik */
+main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 8rem 2rem 4rem;
+}
+
+/* Pathway (Kariyer Yolu) Detayları */
+.pathway-details {
+    background-color: #0a192f;
+    min-height: 100vh;
+    padding-bottom: 4rem;
+}
+
+.pathway-header {
+    background: linear-gradient(to right, #112240, #0a192f);
+    padding: 4rem 2rem;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+    margin-bottom: 3rem;
+}
+
+.pathway-header h1 {
+    font-size: 3rem;
+    color: #64ffda;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.pathway-description {
+    color: #8892b0;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    max-width: 800px;
+    margin-bottom: 2rem;
+}
+
+.career-info {
+    background: rgba(17, 34, 64, 0.5);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.career-info h2 {
+    color: #64ffda;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.career-info p {
+    color: #8892b0;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.career-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.career-feature {
+    background: rgba(17, 34, 64, 0.3);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.career-feature i {
+    color: #64ffda;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.career-feature h3 {
+    color: #e6f1ff;
+    margin-bottom: 0.5rem;
+}
+
+.career-feature p {
+    color: #8892b0;
+    font-size: 0.9rem;
+}
+
+/* Modüller Listesi */
+.modules-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.module-card {
+    background: rgba(17, 34, 64, 0.5);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    border-color: #64ffda;
+}
+
+.module-header {
+    padding: 2rem;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.module-header-left {
+    flex: 1;
+}
+
+.module-header h3 {
+    color: #64ffda;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.module-header .tool-icon {
+    font-size: 2rem;
+    color: #64ffda;
+}
+
+.module-meta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #8892b0;
+}
+
+.meta-item i {
+    color: #64ffda;
+}
+
+.module-progress {
+    background: rgba(100, 255, 218, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.progress-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: conic-gradient(#64ffda var(--progress), rgba(100, 255, 218, 0.1) var(--progress));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+}
+
+.progress-circle span {
+    color: #64ffda;
+    font-weight: 600;
+}
+
+/* Dersler Listesi */
+.lessons-list {
+    padding: 2rem;
+}
+
+.lesson-item {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    transition: background-color 0.3s ease;
+}
+
+.lesson-item:hover {
+    background: rgba(100, 255, 218, 0.05);
+}
+
+.lesson-item:last-child {
+    border-bottom: none;
+}
+
+.lesson-number {
+    color: #64ffda;
+    font-size: 1.2rem;
+    font-weight: 600;
+    min-width: 40px;
+}
+
+.lesson-info {
+    flex: 1;
+}
+
+.lesson-info h4 {
+    color: #e6f1ff;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.lesson-info p {
+    color: #8892b0;
+    font-size: 0.9rem;
+}
+
+.lesson-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.duration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #8892b0;
+    font-size: 0.9rem;
+}
+
+.duration i {
+    color: #64ffda;
+}
+
+.lesson-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.status-completed {
+    color: #2ecc71;
+}
+
+.status-in-progress {
+    color: #f1c40f;
+}
+
+.status-not-started {
+    color: #8892b0;
+}
+
+.lesson-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-start {
+    padding: 0.8rem 1.5rem;
+    background: transparent;
+    border: 2px solid #64ffda;
+    color: #64ffda;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-start:hover {
+    background: rgba(100, 255, 218, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Pathway Sidebar */
+.pathway-sidebar {
+    position: sticky;
+    top: 100px;
+    background: rgba(17, 34, 64, 0.5);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.career-stats {
+    margin-bottom: 2rem;
+}
+
+.stat-item {
+    margin-bottom: 1.5rem;
+}
+
+.stat-item h4 {
+    color: #8892b0;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    color: #64ffda;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.career-requirements {
+    margin-top: 2rem;
+}
+
+.career-requirements h3 {
+    color: #64ffda;
+    margin-bottom: 1rem;
+}
+
+.requirements-list {
+    list-style: none;
+}
+
+.requirements-list li {
+    color: #8892b0;
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.requirements-list li::before {
+    content: '→';
+    color: #64ffda;
+    position: absolute;
+    left: 0;
+}
+
+@media (max-width: 768px) {
+    .pathway-header {
+        padding: 3rem 1rem;
+    }
+
+    .pathway-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .career-features {
+        grid-template-columns: 1fr;
+    }
+
+    .module-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .module-meta {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .lesson-item {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .lesson-actions {
+        width: 100%;
+    }
+
+    .btn-start {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* İlerleme Durumu */
+.progress-indicator {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-left: 1rem;
+}
+
+.status-completed {
+    background-color: #27ae60;
+    color: white;
+}
+
+.status-in-progress {
+    background-color: #f1c40f;
+    color: #2c3e50;
+}
+
+.status-not-started {
+    background-color: #95a5a6;
+    color: white;
+}
+
+/* Header ve Navigasyon */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--bg-secondary);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-link:hover {
+    color: var(--accent);
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+}
+
+.nav-link.login-btn, .nav-link.signup-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.nav-link.login-btn {
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+.nav-link.login-btn:hover {
+    background: var(--accent-hover);
+}
+
+.nav-link.signup-btn {
+    background: var(--accent);
+    color: var(--bg-primary);
+}
+
+.nav-link.signup-btn:hover {
+    opacity: 0.9;
+}
+
+/* Ana İçerik */
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 2rem 2rem;
+}
+
+/* Hero Bölümü */
+.hero-section {
+    text-align: center;
+    padding: 6rem 2rem;
+    background-color: #112240;
+    border-radius: 20px;
+    margin-bottom: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(100, 255, 218, 0.1), transparent);
+    z-index: 1;
+}
+
+.text-section {
+    font-size: 3.5rem;
+    color: #64ffda;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-text {
+    color: #8892b0;
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn.explore {
+    background-color: #64ffda;
+    color: #112240;
+}
+
+.btn.explore:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.4);
+}
+
+.btn.join {
+    background-color: transparent;
+    border: 2px solid #64ffda;
+    color: #64ffda;
+}
+
+.btn.join:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+    transform: translateY(-2px);
+}
+
+/* İstatistik Kartları */
+.stats-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.stat-card {
+    background-color: #112240;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: #64ffda;
+}
+
+.stat-card h3 {
+    color: #8892b0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.stat-number {
+    color: #64ffda;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.stat-desc {
+    color: #8892b0;
+    font-size: 0.9rem;
+}
+
+/* Pathway Bölümü */
+.pathways-section {
+    margin-bottom: 4rem;
+}
+
+.pathways-section h2 {
+    text-align: center;
+    color: #64ffda;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+
+.pathway-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.pathway-card {
+    background-color: #112240;
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    transition: all 0.3s ease;
+}
+
+.pathway-card:hover {
+    transform: translateY(-5px);
+    border-color: #64ffda;
+}
+
+.pathway-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.pathway-card h3 {
+    color: #64ffda;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.pathway-card p {
+    color: #8892b0;
+    margin-bottom: 1.5rem;
+}
+
+.pathway-features {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.pathway-features li {
+    color: #8892b0;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.pathway-features li::before {
+    content: '→';
+    color: #64ffda;
+    position: absolute;
+    left: 0;
+}
+
+.btn-pathway {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: transparent;
+    border: 2px solid #64ffda;
+    color: #64ffda;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-pathway:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+}
+
+/* Özellikler Bölümü */
+.features-section {
+    margin-bottom: 4rem;
+}
+
+.features-section h2 {
+    text-align: center;
+    color: #64ffda;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.feature-card {
+    background-color: #112240;
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: #64ffda;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    color: #64ffda;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: #8892b0;
+}
+
+/* Pathways Sayfası */
+.pathways-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.pathways-header h1 {
+    font-size: 3rem;
+    color: #64ffda;
+    margin-bottom: 1rem;
+}
+
+.pathways-header p {
+    color: #8892b0;
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pathway-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.filter-btn {
+    padding: 0.8rem 1.5rem;
+    border: 1px solid #64ffda;
+    background: transparent;
+    color: #64ffda;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+}
+
+.filter-btn.active {
+    background-color: #64ffda;
+    color: #112240;
+}
+
+.all-pathways {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+/* Login Sayfası */
+.login-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #112240;
+    border-radius: 15px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.login-container h1 {
+    color: #64ffda;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: #8892b0;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    background-color: #0a192f;
+    color: #e6f1ff;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #64ffda;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-login {
+    padding: 0.8rem 2rem;
+    background-color: #64ffda;
+    color: #112240;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.4);
+}
+
+.forgot-password {
+    color: #8892b0;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #64ffda;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.form-footer p {
+    color: #8892b0;
+    font-size: 0.9rem;
+}
+
+.form-footer a {
+    color: #64ffda;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.form-footer a:hover {
+    color: #8892b0;
+}
+
+/* Signup Sayfası */
+.signup-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #112240;
+    border-radius: 15px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.signup-container h1 {
+    color: #64ffda;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #8892b0;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 4px;
+    background-color: #0a192f;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+    background-color: #64ffda;
+    border-color: #64ffda;
+}
+
+.btn-signup {
+    width: 100%;
+    padding: 1rem;
+    background-color: #64ffda;
+    color: #112240;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-signup:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.4);
+}
+
+/* Dashboard */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.stat-card {
+    background: rgba(17, 34, 64, 0.5);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.stat-card h3 {
+    color: #8892b0;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-number {
+    color: #64ffda;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.pathways-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.pathway-card {
+    background: rgba(17, 34, 64, 0.5);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.pathway-card:hover {
+    transform: translateY(-5px);
+}
+
+.pathway-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.pathway-header h3 {
+    color: #ccd6f6;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.pathway-level {
+    background: rgba(100, 255, 218, 0.1);
+    color: #64ffda;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.pathway-description {
+    color: #8892b0;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.pathway-progress {
+    margin: 1rem 0;
+}
+
+.progress-bar {
+    height: 6px;
+    background: rgba(100, 255, 218, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: #64ffda;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: #8892b0;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    text-align: right;
+}
+
+.pathway-meta {
+    display: flex;
+    justify-content: space-between;
+    color: #8892b0;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+}
+
+.btn-continue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #64ffda;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.btn-continue:hover {
+    color: #ccd6f6;
+}
+
+.no-pathways {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(17, 34, 64, 0.5);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 12px;
+}
+
+.no-pathways i {
+    font-size: 3rem;
+    color: #64ffda;
+    margin-bottom: 1rem;
+}
+
+.no-pathways p {
+    color: #8892b0;
+    margin-bottom: 1.5rem;
+}
+
+.btn-explore {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 2px solid #64ffda;
+    color: #64ffda;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-explore:hover {
+    background: rgba(100, 255, 218, 0.1);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 1rem;
+    }
+
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .pathways-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive Tasarım */
+@media (max-width: 1024px) {
+    .pathway-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 5rem 1rem 1rem;
+    }
+
+    .text-section {
+        font-size: 2.5rem;
+    }
+
+    .stats-section,
+    .pathway-grid,
+    .features-grid,
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .top-nav {
+        flex-wrap: wrap;
+        padding: 1rem;
+    }
+
+    .nav-left {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+        gap: 1rem;
+    }
+
+    .nav-right {
+        order: 1;
+        margin-left: 0;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .hero-section {
+        padding: 3rem 1rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .signup-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .pathways-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .pathway-filters {
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        font-size: 0.9rem;
+    }
+
+    .pathway-actions {
+        flex-direction: column;
+    }
+
+    .btn-details, .btn-enroll {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-nav {
+        padding: 1rem;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+    }
+
+    .text-section {
+        font-size: 2rem;
+    }
+
+    .hero-text {
+        font-size: 1rem;
+    }
+}
+
+/* Pathway Detay Sayfası */
+.pathway-details {
+    background-color: #112240;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.pathway-header {
+    margin-bottom: 2rem;
+}
+
+.pathway-title-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.pathway-title-section .pathway-icon {
+    font-size: 3rem;
+    background-color: rgba(100, 255, 218, 0.1);
+    padding: 1rem;
+    border-radius: 15px;
+}
+
+.pathway-title-section h1 {
+    color: #64ffda;
+    margin-bottom: 0.5rem;
+}
+
+.pathway-meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.pathway-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(100, 255, 218, 0.1);
+    border-radius: 8px;
+    color: #64ffda;
+    font-size: 0.9rem;
+}
+
+.pathway-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.content-section {
+    background-color: rgba(17, 34, 64, 0.5);
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.content-section h2 {
+    color: #64ffda;
+    margin-bottom: 1.5rem;
+}
+
+.modules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.module-item {
+    background-color: #112240;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.module-header h3 {
+    color: #64ffda;
+}
+
+.lesson-count {
+    color: #8892b0;
+    font-size: 0.9rem;
+}
+
+.lessons-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lessons-list li {
+    color: #8892b0;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.lessons-list li:last-child {
+    border-bottom: none;
+}
+
+.enrollment-section {
+    background-color: rgba(17, 34, 64, 0.5);
+    padding: 2rem;
+    border-radius: 10px;
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+}
+
+.price-box {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.price-box h3 {
+    color: #8892b0;
+    margin-bottom: 0.5rem;
+}
+
+.price {
+    color: #64ffda;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.btn-enroll, .btn-enrolled, .btn-continue {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.btn-enroll {
+    background-color: #64ffda;
+    color: #112240;
+}
+
+.btn-enroll:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.4);
+}
+
+.btn-enrolled {
+    background-color: rgba(100, 255, 218, 0.1);
+    color: #64ffda;
+    cursor: not-allowed;
+}
+
+.btn-continue {
+    background-color: transparent;
+    border: 2px solid #64ffda;
+    color: #64ffda;
+    text-decoration: none;
+}
+
+.btn-continue:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+}
+
+/* Hata Sayfası */
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 2rem;
+}
+
+.error-content {
+    text-align: center;
+    background-color: #112240;
+    padding: 3rem;
+    border-radius: 15px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    max-width: 500px;
+    width: 100%;
+}
+
+.error-content i {
+    font-size: 4rem;
+    color: #ff6b6b;
+    margin-bottom: 1.5rem;
+}
+
+.error-content h1 {
+    color: #64ffda;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.error-content p {
+    color: #8892b0;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.error-content .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: #64ffda;
+    color: #112240;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.error-content .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.4);
+}
+
+/* Sidebar Components */
+.enrollment-box, .progress-box {
+    background: rgba(17, 34, 64, 0.5);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.enrollment-box h3, .progress-box h3 {
+    color: #64ffda;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.enrollment-box p {
+    color: #8892b0;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(100, 255, 218, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress {
+    height: 100%;
+    background: #64ffda;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: #64ffda;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .lesson-item {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .btn-start {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .lesson-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Auth Pages */
+.auth-container {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.auth-box {
+    background: rgba(17, 34, 64, 0.5);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-box h1 {
+    color: #ccd6f6;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.auth-form label {
+    display: block;
+    color: #8892b0;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(17, 34, 64, 0.7);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 6px;
+    color: #ccd6f6;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #64ffda;
+}
+
+.btn-auth {
+    width: 100%;
+    padding: 0.8rem;
+    background: #64ffda;
+    color: #0a192f;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-auth:hover {
+    background: rgba(100, 255, 218, 0.8);
+    transform: translateY(-2px);
+}
+
+.btn-auth-secondary {
+    width: 100%;
+    padding: 0.8rem;
+    background: transparent;
+    color: #64ffda;
+    border: 2px solid #64ffda;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn-auth-secondary:hover {
+    background: rgba(100, 255, 218, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-links {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-links a {
+    color: #8892b0;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.form-links a:hover {
+    color: #64ffda;
+}
+
+.auth-divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background: rgba(100, 255, 218, 0.1);
+}
+
+.auth-divider::before {
+    left: 0;
+}
+
+.auth-divider::after {
+    right: 0;
+}
+
+.auth-divider span {
+    color: #8892b0;
+    background: #0a192f;
+    padding: 0 1rem;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 1rem;
+    }
+
+    .auth-box {
+        padding: 1.5rem;
+    }
+}
+
+/* Ders Sayfası */
+.lesson-container {
+    display: flex;
+    min-height: calc(100vh - 60px);
+    margin-top: 60px;
+}
+
+.lesson-sidebar {
+    width: 300px;
+    min-width: 300px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    height: calc(100vh - 60px);
+    position: fixed;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+.module-info {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.module-info h2 {
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-primary);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar .progress {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.lessons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.lesson-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.lesson-link:hover {
+    background: var(--accent-hover);
+    color: var(--text-primary);
+}
+
+.lesson-link.active {
+    background: var(--accent-hover);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+.lesson-number {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-hover);
+    border-radius: 50%;
+    font-size: 0.8rem;
+    color: var(--accent);
+}
+
+.lesson-info h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.lesson-status i {
+    font-size: 1.2rem;
+}
+
+.lesson-status i.completed {
+    color: var(--accent);
+}
+
+.lesson-status i.in-progress {
+    color: #ffd700;
+}
+
+.lesson-status i.not-started {
+    color: var(--text-secondary);
+}
+
+.lesson-content {
+    margin-left: 300px;
+    flex: 1;
+    padding: 2rem;
+    max-width: calc(100vw - 300px);
+    overflow-x: hidden;
+}
+
+.lesson-header {
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.lesson-header h1 {
+    color: var(--text-primary);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.video-container {
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    padding-top: 56.25%;
+}
+
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.lesson-text {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.lesson-text.markdown-body {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+}
+
+.lesson-text.markdown-body h1,
+.lesson-text.markdown-body h2,
+.lesson-text.markdown-body h3,
+.lesson-text.markdown-body h4,
+.lesson-text.markdown-body h5,
+.lesson-text.markdown-body h6 {
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.3rem;
+}
+
+.lesson-text.markdown-body code {
+    background: var(--bg-primary);
+    color: var(--accent);
+}
+
+.lesson-text.markdown-body pre {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+}
+
+.lesson-text.markdown-body pre code {
+    color: var(--text-primary);
+}
+
+.lesson-text.markdown-body blockquote {
+    color: var(--text-secondary);
+    border-left-color: var(--accent);
+}
+
+.lesson-text.markdown-body ul,
+.lesson-text.markdown-body ol {
+    padding-left: 2rem;
+}
+
+.lesson-text.markdown-body li {
+    margin: 0.5rem 0;
+}
+
+.lesson-navigation {
+    max-width: 800px;
+    margin: 2rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #43a047;
+}
+
+.btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-primary);
+}
+
+@media (max-width: 1024px) {
+    .lesson-sidebar {
+        display: none;
+    }
+
+    .lesson-content {
+        margin-left: 0;
+        max-width: 100%;
+    }
+}
+
+/* İçerik Geçiş Butonları */
+.content-toggle-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.toggle-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background-color: var(--bg-hover);
+}
+
+.toggle-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* İçerik Bölümleri */
+.content-container {
+    position: relative;
+    width: 100%;
+}
+
+.content-section {
+    display: none;
+    width: 100%;
+}
+
+.content-section.active {
+    display: block;
+}
+
+/* Video Bölümü */
+.video-section {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.video-container {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Döküman Bölümü */
+.document-section {
+    max-width: 100%;
+    padding: 2rem;
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+}
+
+.lesson-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.lesson-text h1,
+.lesson-text h2,
+.lesson-text h3,
+.lesson-text h4,
+.lesson-text h5,
+.lesson-text h6 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.lesson-text p {
+    margin-bottom: 1.5rem;
+}
+
+.lesson-text code {
+    background-color: var(--bg-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.lesson-text pre {
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.lesson-text pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Popüler Kariyer Yolları Bölümü */
+.popular-career-paths {
+    padding: 4rem 0;
+    background-color: #f8f9fa;
+}
+
+.career-paths-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.career-path-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.career-path-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.career-path-icon {
+    width: 60px;
+    height: 60px;
+    background: #e9ecef;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.career-path-icon i {
+    font-size: 1.8rem;
+    color: #495057;
+}
+
+.career-path-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.career-path-content p {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.career-path-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.career-path-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.career-path-meta i {
+    color: #28a745;
+}
+
+@media (max-width: 768px) {
+    .career-paths-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .career-path-card {
+        padding: 1.5rem;
+    }
+    
+    .career-path-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .career-path-icon i {
+        font-size: 1.5rem;
+    }
+    
+    .career-path-content h3 {
+        font-size: 1.3rem;
+    }
+} 

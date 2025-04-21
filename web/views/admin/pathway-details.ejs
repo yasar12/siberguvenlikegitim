@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr" class="bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pathway.title %> - Admin Paneli</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f2ff',
+                        'cyber-dark': '#0a192f',
+                        'cyber-gray': '#1a1a1a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <!-- Admin Navbar -->
+    <nav class="bg-cyber-gray border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/admin" class="text-cyber-blue font-bold text-xl">
+                            <i class="fas fa-shield-alt mr-2"></i>Admin Paneli
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="/admin" class="border-transparent text-gray-400 hover:border-gray-300 hover:text-gray-300 border-b-2 px-1 pt-1 text-sm font-medium">
+                            Ana Sayfa
+                        </a>
+                        <a href="/admin/pathway/add" class="border-transparent text-gray-400 hover:border-gray-300 hover:text-gray-300 border-b-2 px-1 pt-1 text-sm font-medium">
+                            Yeni Pathway Ekle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Ana İçerik -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Pathway Başlık ve İstatistikler -->
+        <div class="bg-cyber-gray rounded-xl border border-gray-800 overflow-hidden mb-8">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-300 mb-2"><%= pathway.title %></h1>
+                        <p class="text-gray-400 mb-4"><%= pathway.description %></p>
+                        <div class="flex space-x-4">
+                            <div class="bg-gray-800 px-4 py-2 rounded-lg">
+                                <span class="text-sm text-gray-400">Seviye</span>
+                                <p class="text-cyber-blue font-medium"><%= pathway.level %></p>
+                            </div>
+                            <div class="bg-gray-800 px-4 py-2 rounded-lg">
+                                <span class="text-sm text-gray-400">Süre</span>
+                                <p class="text-cyber-blue font-medium"><%= pathway.duration_hours %> saat</p>
+                            </div>
+                            <div class="bg-gray-800 px-4 py-2 rounded-lg">
+                                <span class="text-sm text-gray-400">Modül Sayısı</span>
+                                <p class="text-cyber-blue font-medium"><%= modules.length %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="/admin/pathway/<%= pathway.id %>/edit" 
+                            class="px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-medium hover:bg-cyber-blue/90 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200">
+                            <i class="fas fa-edit mr-2"></i>Düzenle
+                        </a>
+                        <form action="/admin/pathway/<%= pathway.id %>/delete" method="POST" class="inline">
+                            <button type="submit" 
+                                class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200"
+                                onclick="return confirm('Bu pathway\'i silmek istediğinizden emin misiniz?')">
+                                <i class="fas fa-trash mr-2"></i>Sil
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modüller -->
+        <div class="space-y-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-300">Modüller</h2>
+                <a href="/admin/module/add?pathway_id=<%= pathway.id %>" 
+                    class="px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-medium hover:bg-cyber-blue/90 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200">
+                    <i class="fas fa-plus mr-2"></i>Yeni Modül Ekle
+                </a>
+            </div>
+
+            <% modules.forEach(module => { %>
+                <div class="bg-cyber-gray rounded-xl border border-gray-800 overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-300 mb-2"><%= module.title %></h3>
+                                <p class="text-gray-400 mb-4"><%= module.description %></p>
+                                <div class="flex space-x-4">
+                                    <div class="bg-gray-800 px-4 py-2 rounded-lg">
+                                        <span class="text-sm text-gray-400">Sıra</span>
+                                        <p class="text-cyber-blue font-medium"><%= module.order_number %></p>
+                                    </div>
+                                    <div class="bg-gray-800 px-4 py-2 rounded-lg">
+                                        <span class="text-sm text-gray-400">Süre</span>
+                                        <p class="text-cyber-blue font-medium"><%= module.duration_hours %> saat</p>
+                                    </div>
+                                    <div class="bg-gray-800 px-4 py-2 rounded-lg">
+                                        <span class="text-sm text-gray-400">Ders Sayısı</span>
+                                        <p class="text-cyber-blue font-medium"><%= module.lessons.length %></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-4">
+                                <a href="/admin/module/<%= module.id %>/edit" 
+                                    class="px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-medium hover:bg-cyber-blue/90 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200">
+                                    <i class="fas fa-edit mr-2"></i>Düzenle
+                                </a>
+                                <form action="/admin/module/<%= module.id %>/delete" method="POST" class="inline">
+                                    <button type="submit" 
+                                        class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200"
+                                        onclick="return confirm('Bu modülü silmek istediğinizden emin misiniz?')">
+                                        <i class="fas fa-trash mr-2"></i>Sil
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Dersler -->
+                        <div class="mt-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="text-md font-medium text-gray-300">Dersler</h4>
+                                <a href="/admin/lesson/add?module_id=<%= module.id %>" 
+                                    class="px-3 py-1 bg-gray-800 text-gray-300 rounded-lg font-medium hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200">
+                                    <i class="fas fa-plus mr-2"></i>Yeni Ders Ekle
+                                </a>
+                            </div>
+                            <div class="space-y-3">
+                                <% module.lessons.forEach(lesson => { %>
+                                    <div class="bg-gray-800 rounded-lg p-4 flex justify-between items-center">
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-300"><%= lesson.title %></h5>
+                                            <p class="text-sm text-gray-400"><%= lesson.duration_minutes %> dakika</p>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <a href="/admin/lesson/<%= lesson.id %>/edit" 
+                                                class="px-3 py-1 bg-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="/admin/lesson/<%= lesson.id %>/delete" method="POST" class="inline">
+                                                <button type="submit" 
+                                                    class="px-3 py-1 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-cyber-gray transition-colors duration-200"
+                                                    onclick="return confirm('Bu dersi silmek istediğinizden emin misiniz?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</body>
+</html> 

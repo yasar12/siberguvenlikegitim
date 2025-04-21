@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr" class="bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - Siber Güvenlik Akademi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f2ff',
+                        'cyber-dark': '#0a192f',
+                        'cyber-gray': '#1a1a1a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-gray-100 min-h-screen flex flex-col">
+    <nav class="bg-cyber-gray border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/" class="text-cyber-blue font-bold text-xl">
+                            <i class="fas fa-shield-alt mr-2"></i>Siber Güvenlik Akademi
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 bg-cyber-gray p-8 rounded-xl border border-gray-800 shadow-2xl">
+            <div>
+                <div class="flex justify-center">
+                    <div class="w-16 h-16 bg-cyber-blue/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-3xl text-cyber-blue"></i>
+                    </div>
+                </div>
+                <h2 class="mt-6 text-center text-3xl font-extrabold bg-gradient-to-r from-cyber-blue to-purple-500 bg-clip-text text-transparent">
+                    Giriş Yap
+                </h2>
+            </div>
+            <form id="loginForm" class="mt-8 space-y-6">
+                <div class="rounded-md shadow-sm space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">
+                            E-posta
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-gray-500"></i>
+                            </div>
+                            <input id="email" name="email" type="email" required 
+                                class="appearance-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800 placeholder-gray-400 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent transition-colors duration-200"
+                                placeholder="ornek@email.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300 mb-1">
+                            Şifre
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-500"></i>
+                            </div>
+                            <input id="password" name="password" type="password" required 
+                                class="appearance-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800 placeholder-gray-400 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent transition-colors duration-200"
+                                placeholder="••••••••">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="text-sm">
+                        <a href="#" class="font-medium text-cyber-blue hover:text-cyber-blue/80 transition-colors duration-200">
+                            Şifremi Unuttum
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" 
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-cyber-blue hover:bg-cyber-blue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyber-blue transition-colors duration-200">
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-sign-in-alt text-white group-hover:text-white/80"></i>
+                        </span>
+                        Giriş Yap
+                    </button>
+                </div>
+
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-700"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-cyber-gray text-gray-400">Hesabınız yok mu?</span>
+                    </div>
+                </div>
+
+                <div>
+                    <a href="/register" 
+                        class="group relative w-full flex justify-center py-3 px-4 border border-cyber-blue text-sm font-medium rounded-lg text-cyber-blue bg-transparent hover:bg-cyber-blue/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyber-blue transition-colors duration-200">
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-user-plus text-cyber-blue group-hover:text-cyber-blue/80"></i>
+                        </span>
+                        Hemen Kayıt Olun
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="bg-cyber-dark border-t border-gray-800">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Siber Güvenlik Akademi. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+            
+            try {
+                // Butonu devre dışı bırak ve yükleniyor durumunu göster
+                submitButton.disabled = true;
+                submitButton.innerHTML = `
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <i class="fas fa-spinner fa-spin text-white"></i>
+                    </span>
+                    Giriş Yapılıyor...
+                `;
+
+                const formData = {
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value
+                };
+
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    // Hata mesajını göster
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg mt-4';
+                    errorDiv.innerHTML = `
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            <span>${data.error || 'Giriş yapılırken bir hata oluştu'}</span>
+                        </div>
+                    `;
+                    
+                    // Varsa eski hata mesajını kaldır
+                    const oldError = document.querySelector('.bg-red-500\\/10');
+                    if (oldError) oldError.remove();
+                    
+                    document.getElementById('loginForm').insertBefore(errorDiv, document.querySelector('.flex.items-center.justify-between'));
+                }
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                alert('Giriş yapılırken bir hata oluştu');
+            } finally {
+                // Butonu eski haline getir
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            }
+        });
+    </script>
+</body>
+</html> 

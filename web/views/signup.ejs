@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - Siber Güvenlik Akademi</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="top-nav">
+            <div class="nav-left">
+                <a href="/" class="nav-link">Ana Sayfa</a>
+                <a href="/pathways" class="nav-link">Eğitimler</a>
+                <a href="/about" class="nav-link">Hakkımızda</a>
+                <a href="/contact" class="nav-link">İletişim</a>
+            </div>
+            <div class="nav-right">
+                <a href="/login" class="nav-link login-btn">Giriş Yap</a>
+                <a href="/signup" class="nav-link signup-btn active">Kayıt Ol</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="signup-container">
+            <h1>Kayıt Ol</h1>
+            <form class="signup-form" id="signupForm">
+                <div class="form-group">
+                    <label for="fullname">Ad Soyad</label>
+                    <input type="text" id="fullname" name="full_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-posta</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Şifre Tekrar</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="terms" required>
+                        <span>Kullanım şartlarını ve gizlilik politikasını kabul ediyorum</span>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-signup">Kayıt Ol</button>
+                </div>
+                <div class="form-footer">
+                    <p>Zaten hesabınız var mı? <a href="/login">Giriş Yapın</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Siber Güvenlik Akademi</h3>
+                <p>Geleceğin siber güvenlik uzmanlarını yetiştiriyoruz.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Hızlı Bağlantılar</h3>
+                <ul>
+                    <li><a href="/about">Hakkımızda</a></li>
+                    <li><a href="/contact">İletişim</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>İletişim</h3>
+                <p>Email: info@siberguvenlik.com</p>
+                <p>Tel: +90 (555) 123 45 67</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Siber Güvenlik Akademi. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                alert('Şifreler eşleşmiyor!');
+                return;
+            }
+
+            const formData = {
+                full_name: document.getElementById('fullname').value,
+                email: document.getElementById('email').value,
+                password: password
+            };
+
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert(data.error || 'Kayıt olurken bir hata oluştu');
+                }
+            } catch (error) {
+                console.error('Kayıt hatası:', error);
+                alert('Kayıt olurken bir hata oluştu');
+            }
+        });
+    </script>
+</body>
+</html> 
