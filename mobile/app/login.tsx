@@ -7,16 +7,19 @@ import {
   StyleSheet,
   ActivityIndicator,
   Alert,
+  Platform,
 } from 'react-native';
 import { useAuth } from '../src/contexts/AuthContext';
 import { colors } from '../src/constants/colors';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -24,49 +27,57 @@ export default function LoginPage() {
       Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
       return;
     }
-
     try {
-      console.log('Login işlemi başlatılıyor...');
-      console.log('Email:', email);
-      console.log('Şifre uzunluğu:', password.length);
-      
       setLoading(true);
-      await signIn(email, password);
-      
-      console.log('Login başarılı, dashboard\'a yönlendiriliyorum...');
+      await login(email, password);
       router.replace('/dashboard');
     } catch (error: any) {
-      console.error('Login hatası:', error);
       Alert.alert('Hata', error.message);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleRegister = () => {
+    router.push('/register');
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <Text style={styles.title}>Giriş Yap</Text>
-        
-        <TextInput
-          style={styles.input}
-          placeholder="E-posta"
-          placeholderTextColor={colors.text}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
-        />
-        
-        <TextInput
-          style={styles.input}
-          placeholder="Şifre"
-          placeholderTextColor={colors.text}
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-        
+    <View style={styles.background}>
+      <View style={styles.card}>
+        <Ionicons name="shield-checkmark" size={48} color={colors.primary} style={styles.logo} />
+        <Text style={styles.title}>Hoş Geldiniz!</Text>
+        <Text style={styles.subtitle}>Siber Güvenlik Eğitim Platformu'na giriş yapın</Text>
+        <View style={styles.inputContainer}>
+          <Ionicons name="mail-outline" size={20} color={colors.textSecondary} style={styles.inputIcon} />
+          <TextInput
+            style={styles.input}
+            placeholder="E-posta"
+            placeholderTextColor={colors.textSecondary}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Ionicons name="lock-closed-outline" size={20} color={colors.textSecondary} style={styles.inputIcon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Şifre"
+            placeholderTextColor={colors.textSecondary}
+            secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Ionicons
+              name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+              size={20}
+              color={colors.textSecondary}
+            />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
           style={styles.button}
           onPress={handleLogin}
@@ -78,49 +89,94 @@ export default function LoginPage() {
             <Text style={styles.buttonText}>Giriş Yap</Text>
           )}
         </TouchableOpacity>
+        <TouchableOpacity style={styles.registerLink} onPress={handleRegister}>
+          <Text style={styles.registerText}>
+            Hesabınız yok mu? <Text style={styles.registerTextBold}>Kayıt olun</Text>
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
     backgroundColor: colors.background,
     justifyContent: 'center',
-    padding: 20,
+    alignItems: 'center',
   },
-  formContainer: {
+  card: {
     backgroundColor: colors.card,
-    padding: 20,
-    borderRadius: 10,
-    width: '100%',
+    padding: 28,
+    borderRadius: 18,
+    width: '90%',
     maxWidth: 400,
-    alignSelf: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  logo: {
+    marginBottom: 12,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: colors.text,
-    marginBottom: 20,
+    color: colors.primary,
+    marginBottom: 6,
     textAlign: 'center',
   },
-  input: {
+  subtitle: {
+    fontSize: 15,
+    color: colors.textSecondary,
+    marginBottom: 24,
+    textAlign: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.background,
-    borderRadius: 5,
-    padding: 15,
-    marginBottom: 15,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.border,
+    marginBottom: 16,
+    paddingHorizontal: 12,
+    paddingVertical: Platform.OS === 'ios' ? 14 : 0,
+  },
+  inputIcon: {
+    marginRight: 8,
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
     color: colors.text,
+    paddingVertical: 12,
   },
   button: {
     backgroundColor: colors.primary,
-    padding: 15,
-    borderRadius: 5,
+    paddingVertical: 15,
+    borderRadius: 8,
     alignItems: 'center',
+    width: '100%',
+    marginTop: 8,
   },
   buttonText: {
     color: colors.background,
-    fontSize: 16,
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  registerLink: {
+    marginTop: 18,
+  },
+  registerText: {
+    color: colors.textSecondary,
+    fontSize: 15,
+  },
+  registerTextBold: {
+    color: colors.primary,
     fontWeight: 'bold',
   },
 }); 
