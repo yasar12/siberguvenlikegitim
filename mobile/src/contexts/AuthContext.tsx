@@ -14,20 +14,62 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Kullanıcı durumunda değişiklik olduğunda yönlendirme yap
+  useEffect(() => {
+    if (!loading) {
+      // Eğer kullanıcı null ise ve yükleme tamamlandıysa, ana sayfaya yönlendir
+      if (!user) {
+        // Eğer zaten auth sayfalarında değilsek, ana sayfaya yönlendir
+        const pathname = window.location?.pathname || '';
+        if (!pathname.includes('/(auth)') && !pathname.includes('/login') && !pathname.includes('/register')) {
+          // Rota root ise bir şey yapma (zaten app/index.tsx yönlendirecek)
+          if (pathname !== '/' && pathname !== '') {
+            router.replace('/');
+          }
+        }
+      }
+    }
+  }, [user, loading]);
+
   const handleLogout = async () => {
     try {
-      await AsyncStorage.multiRemove(['user', 'token']);
+      setLoading(true);
+      
+      // 1. Önce state'i temizle - Bu UI'ın hemen güncellemesini sağlar
       setUser(null);
-      setLoading(false);
-      setTimeout(() => {
-        router.replace('/login');
-      }, 0);
+      
+      // 2. Local storage'ı temizle
+      await AsyncStorage.multiRemove(['user', 'token']);
+      
+      // 3. Sonra API'ye logout isteği gönder
+      try {
+        await fetch('http://localhost:3000/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+      } catch (apiError) {
+        // API hatası olsa bile devam et
+        console.error('API logout hatası (devam ediliyor):', apiError);
+      }
+
+      // 4. Navigation stack'i tamamen temizle ve en başa dön
+      // Bu, tüm ekran geçmişini temizler ve sadece login ekranını gösterir
+      router.replace('/');
     } catch (error) {
       console.error('Çıkış hatası:', error);
+    } finally {
       setLoading(false);
     }
   };
@@ -48,11 +90,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           const parsedUser = JSON.parse(storedUser);
           setUser(parsedUser);
-          
-          // Sadece dashboard sayfasındaysak verileri yükle
-          if (router.canGoBack()) {
-            const dashboardData = await getDashboardData();
-          }
         } catch (error: any) {
           if (error.response?.status === 401 || error.message === 'UNAUTHORIZED') {
             await handleLogout();
@@ -81,9 +118,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       ]);
 
       setUser(user);
-      setTimeout(() => {
-        router.replace('/dashboard');
-      }, 0);
+      
+      // Login sonrası navigation stack'i temizleyerek ana sayfaya git
+      router.replace('/(app)');
     } catch (error) {
       console.error('Giriş hatası:', error);
       throw error;
@@ -103,13 +140,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error(response.message || 'Kayıt işlemi başarısız oldu');
       }
 
-      // E-posta adresini AsyncStorage'a kaydet
       await AsyncStorage.setItem('pendingEmail', email);
-      
-      // Doğrulama sayfasına yönlendir
-      setTimeout(() => {
-        router.replace('/verify-email');
-      }, 0);
+      router.replace('/(auth)/verify-email');
     } catch (error: any) {
       console.error('Kayıt hatası:', error);
       throw error;
@@ -122,7 +154,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true);
       
-      // Kaydedilen e-posta adresini al
       const pendingEmail = await AsyncStorage.getItem('pendingEmail');
       if (!pendingEmail) {
         throw new Error('E-posta adresi bulunamadı. Lütfen tekrar kayıt olun.');
@@ -138,18 +169,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (response.token && response.user) {
-        // Token ve kullanıcı bilgilerini kaydet
         await AsyncStorage.setItem('token', response.token);
         await AsyncStorage.setItem('user', JSON.stringify(response.user));
         setUser(response.user);
         
-        // Geçici e-posta bilgisini temizle
         await AsyncStorage.removeItem('pendingEmail');
         
-        // Başarılı doğrulama sonrası dashboard'a yönlendir
-        setTimeout(() => {
-          router.replace('/(app)');
-        }, 0);
+        // Doğrulama sonrası navigation stack'i temizleyerek ana sayfaya git
+        router.replace('/(app)');
       } else {
         throw new Error('Geçersiz sunucu yanıtı: Token veya kullanıcı bilgisi eksik');
       }
@@ -175,12 +202,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 } 

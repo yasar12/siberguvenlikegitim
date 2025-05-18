@@ -1,74 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator, RefreshControl, Alert } from 'react-native';
-import { dashboardService } from '../src/services/api';
-import { DashboardData } from '../src/services/api';
-import { useAuth } from '../src/contexts/AuthContext';
+import { dashboardService } from '../../src/services/api';
+import { useAuth } from '../../src/contexts/AuthContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Card } from '../src/components/Card';
-import { colors } from '../src/constants/colors';
-import { useRouter } from 'expo-router';
+import { Card } from '../../src/components/Card';
+import { colors } from '../../src/constants/colors';
+
+// DashboardData tipi tanımla
+interface DashboardData {
+  user: {
+    id: number;
+    full_name: string;
+    email: string;
+  };
+  stats: {
+    registeredPathways: number;
+    completedLessons: number;
+    totalLessons: number;
+  };
+  enrolledPathways: Array<{
+    id: number;
+    pathway: {
+      id: number;
+      title: string;
+      description: string;
+    };
+    progress_percentage: number;
+  }>;
+}
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const { user } = useAuth();
-  const router = useRouter();
 
   const loadDashboardData = async () => {
     try {
-      console.log('Dashboard verisi yükleniyor...');
       setLoading(true);
       const response = await dashboardService.getDashboardData();
-      console.log('Dashboard yanıtı alındı:', {
-        user: response.user,
-        stats: response.stats,
-        pathwaysCount: response.enrolledPathways?.length
-      });
       setData(response);
     } catch (error: any) {
       console.error('Dashboard verisi alınamadı:', error);
-      console.error('Hata detayları:', {
-        message: error.message,
-        code: error.code,
-        response: error.response?.data,
-        status: error.response?.status
-      });
-      
-      if (error.response?.status === 401) {
-        console.log('401 hatası: Oturum süresi dolmuş');
-        router.replace('/login');
-      } else {
-        Alert.alert('Hata', 'Dashboard verisi alınamadı. Lütfen tekrar deneyin.');
-      }
+      Alert.alert('Hata', 'Dashboard verisi alınamadı. Lütfen tekrar deneyin.');
     } finally {
-      console.log('Dashboard verisi yükleme tamamlandı');
       setLoading(false);
       setRefreshing(false);
     }
   };
 
   const onRefresh = async () => {
-    console.log('Yenileme başlatıldı');
     setRefreshing(true);
     await loadDashboardData();
-    console.log('Yenileme tamamlandı');
   };
 
   useEffect(() => {
-    console.log('Dashboard useEffect çalıştı');
-    console.log('Mevcut kullanıcı:', user);
-    
-    if (!user) {
-      console.log('Kullanıcı bulunamadı, Login ekranına yönlendiriliyorum...');
-      router.replace('/login');
-      return;
-    }
-    
     loadDashboardData();
-  }, [user]);
+  }, []);
 
-  if (loading) {
+  if (loading && !refreshing) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={colors.primary} />
@@ -96,8 +85,8 @@ export default function DashboardPage() {
           />
         }
       >
-        <View style={styles.header}>
-          <Text style={styles.title}>Hoş Geldiniz, {data.user.full_name}</Text>
+        <View style={styles.welcomeSection}>
+          <Text style={styles.welcomeText}>Hoş Geldiniz, {data.user.full_name}</Text>
         </View>
 
         <Card style={styles.statsCard}>
@@ -167,10 +156,10 @@ const styles = StyleSheet.create({
     color: colors.error,
     fontSize: 16,
   },
-  header: {
+  welcomeSection: {
     padding: 20,
   },
-  title: {
+  welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: colors.text,

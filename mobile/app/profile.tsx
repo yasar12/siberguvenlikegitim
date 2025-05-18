@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, SafeAreaView } from 'react-native';
-import { Card } from '../components/Card';
-import { colors } from '../constants/colors';
-import { userService, authService } from '../services/api';
-import { router } from 'expo-router';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card } from '../src/components/Card';
+import { colors } from '../src/constants/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { useAuth } from '../src/contexts/AuthContext';
+import { userService } from '../src/services/api';
 
+// UserProfile tipi tanımla
 interface UserProfile {
   id: number;
   full_name: string;
   email: string;
-  bio?: string;
-  role: string;
   profile_image?: string;
+  bio?: string;
+  role?: string;
 }
 
 export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const { logout } = useAuth();
 
   useEffect(() => {
     loadProfile();
@@ -40,8 +43,23 @@ export default function Profile() {
 
   const handleLogout = async () => {
     try {
-      await authService.logout();
-      router.replace('/login');
+      Alert.alert(
+        "Çıkış Yap",
+        "Çıkış yapmak istediğinize emin misiniz?",
+        [
+          {
+            text: "İptal",
+            style: "cancel"
+          },
+          {
+            text: "Çıkış Yap",
+            onPress: async () => {
+              // Sadece logout çağır - yönlendirme AuthContext'te yapılacak
+              await logout();
+            }
+          }
+        ]
+      );
     } catch (error) {
       console.error('Çıkış yapılırken hata oluştu:', error);
     }
@@ -125,40 +143,46 @@ export default function Profile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.background,
   },
   scrollView: {
     flex: 1,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.background,
+  },
   header: {
-    padding: 16,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    padding: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: colors.text,
   },
   profileCard: {
-    margin: 16,
-    padding: 16,
+    margin: 20,
+    padding: 20,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: colors.text,
-    marginBottom: 16,
+    marginBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    paddingBottom: 5,
   },
   infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
@@ -170,37 +194,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
     fontWeight: '500',
+    maxWidth: '60%',
+    textAlign: 'right',
   },
   activeStatus: {
     color: colors.success,
+    fontWeight: 'bold',
   },
   logoutButton: {
+    backgroundColor: colors.error,
+    borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F44336',
-    padding: 16,
-    borderRadius: 8,
-    marginTop: 24,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    gap: 8,
+    paddingVertical: 12,
+    marginTop: 20,
   },
   logoutButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginLeft: 8,
   },
   errorText: {
     color: colors.error,
+    fontSize: 16,
     textAlign: 'center',
     marginTop: 20,
   },

@@ -15,7 +15,7 @@ declare module 'express-session' {
 
 const app = express();
 const PORT = 3000;
-const JWT_SECRET = 'your-secret-key'; // Gerçek uygulamada güvenli bir şekilde saklanmalı
+const JWT_SECRET = 'siber-guvenlik-egitim-jwt-secret-key-2024'; // Güvenli JWT secret key
 
 // Tipler
 interface User {
