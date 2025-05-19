@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="tr" class="bg-cyber-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profili Düzenle - Siber Güvenlik Akademi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f2ff',
+                        'cyber-dark': '#0a192f',
+                        'cyber-gray': '#1a1a1a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cyber-dark text-gray-100 min-h-screen flex flex-col">
+    <%- include('partials/nav') %>
+    <main class="flex flex-col items-center justify-center flex-1 py-12 px-4">
+        <form action="/profile/edit" method="POST" class="bg-cyber-gray rounded-xl p-8 border border-gray-800 shadow-xl w-full max-w-md space-y-6">
+            <h1 class="text-2xl font-bold text-cyber-blue mb-4 text-center">Profili Düzenle</h1>
+            <div>
+                <label for="full_name" class="block text-sm font-medium text-gray-300 mb-1">Ad Soyad</label>
+                <input type="text" id="full_name" name="full_name" value="<%= user.full_name %>" required class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent">
+            </div>
+            <div>
+                <label for="profile_image" class="block text-sm font-medium text-gray-300 mb-1">Profil Fotoğrafı URL</label>
+                <input type="text" id="profile_image" name="profile_image" value="<%= user.profile_image || '' %>" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent">
+            </div>
+            <div>
+                <label for="bio" class="block text-sm font-medium text-gray-300 mb-1">Biyografi</label>
+                <textarea id="bio" name="bio" rows="3" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent"><%= user.bio || '' %></textarea>
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300 mb-1">E-posta</label>
+                <input type="email" id="email" name="email" value="<%= user.email %>" disabled class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-400 cursor-not-allowed">
+                <button type="button" id="changeEmailBtn" class="mt-2 px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-semibold hover:bg-cyber-blue/90 transition-colors duration-200">E-posta Değiştir</button>
+            </div>
+            <div id="emailChangeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden">
+                <div class="bg-cyber-gray rounded-xl p-8 border border-gray-800 shadow-xl w-full max-w-md relative">
+                    <button type="button" id="closeEmailChangeModal" class="absolute top-2 right-2 text-gray-400 hover:text-cyber-blue text-xl">&times;</button>
+                    <h2 class="text-xl font-bold text-cyber-blue mb-4 text-center">E-posta Değiştir</h2>
+                    <form id="emailChangeForm" class="space-y-4">
+                        <div id="step1">
+                            <label for="new_email" class="block text-sm font-medium text-gray-300 mb-1">Yeni E-posta</label>
+                            <input type="email" id="new_email" name="new_email" required class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent">
+                            <button type="submit" class="w-full mt-4 px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-semibold hover:bg-cyber-blue/90 transition-colors duration-200">Koda Devam Et</button>
+                        </div>
+                        <div id="step2" class="hidden">
+                            <label for="old_email_code" class="block text-sm font-medium text-gray-300 mb-1">Eski E-posta Kodunu Girin</label>
+                            <input type="text" id="old_email_code" name="old_email_code" maxlength="6" required class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent">
+                            <button type="button" id="resendOldCode" class="mt-2 text-cyber-blue hover:underline text-sm">Kodu Tekrar Gönder</button>
+                            <button type="submit" class="w-full mt-4 px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-semibold hover:bg-cyber-blue/90 transition-colors duration-200">Doğrula</button>
+                        </div>
+                        <div id="step3" class="hidden">
+                            <label for="new_email_code" class="block text-sm font-medium text-gray-300 mb-1">Yeni E-posta Kodunu Girin</label>
+                            <input type="text" id="new_email_code" name="new_email_code" maxlength="6" required class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-cyber-blue focus:border-transparent">
+                            <button type="button" id="resendNewCode" class="mt-2 text-cyber-blue hover:underline text-sm">Kodu Tekrar Gönder</button>
+                            <button type="submit" class="w-full mt-4 px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-semibold hover:bg-cyber-blue/90 transition-colors duration-200">Doğrula ve Değiştir</button>
+                        </div>
+                    </form>
+                    <div id="emailChangeError" class="text-red-500 text-sm mt-2"></div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <a href="/profile" class="text-cyber-blue hover:underline">İptal</a>
+                <button type="submit" class="px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-semibold hover:bg-cyber-blue/90 transition-colors duration-200"><i class="fas fa-save mr-2"></i> Kaydet</button>
+            </div>
+        </form>
+    </main>
+    <footer class="bg-cyber-dark border-t border-gray-800 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Siber Güvenlik Akademi. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const changeEmailBtn = document.getElementById('changeEmailBtn');
+        const emailChangeModal = document.getElementById('emailChangeModal');
+        const closeEmailChangeModal = document.getElementById('closeEmailChangeModal');
+        const emailChangeForm = document.getElementById('emailChangeForm');
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+        const errorDiv = document.getElementById('emailChangeError');
+        const resendOldCode = document.getElementById('resendOldCode');
+        const resendNewCode = document.getElementById('resendNewCode');
+
+        if (changeEmailBtn) {
+            changeEmailBtn.addEventListener('click', () => {
+                emailChangeModal.classList.remove('hidden');
+                step1.classList.remove('hidden');
+                step2.classList.add('hidden');
+                if (step3) step3.classList.add('hidden');
+                errorDiv.textContent = '';
+            });
+        }
+        if (closeEmailChangeModal) {
+            closeEmailChangeModal.addEventListener('click', () => emailChangeModal.classList.add('hidden'));
+        }
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') emailChangeModal.classList.add('hidden'); });
+
+        if (emailChangeForm) {
+            emailChangeForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                if (!step1.classList.contains('hidden')) {
+                    const new_email = document.getElementById('new_email').value;
+                    const res = await fetch('/profile/change-email/start', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ new_email })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        step1.classList.add('hidden');
+                        step2.classList.remove('hidden');
+                        errorDiv.textContent = '';
+                    } else {
+                        errorDiv.textContent = data.error || 'Bir hata oluştu.';
+                    }
+                } else if (!step2.classList.contains('hidden')) {
+                    const old_email_code = document.getElementById('old_email_code').value;
+                    const res = await fetch('/profile/change-email/verify-old', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ old_email_code })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        step2.classList.add('hidden');
+                        step3.classList.remove('hidden');
+                        errorDiv.textContent = '';
+                    } else {
+                        errorDiv.textContent = data.error || 'Bir hata oluştu.';
+                    }
+                } else if (!step3.classList.contains('hidden')) {
+                    const new_email_code = document.getElementById('new_email_code').value;
+                    const new_email = document.getElementById('new_email').value;
+                    const res = await fetch('/profile/change-email/verify-new', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ new_email_code, new_email })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        window.location.href = '/profile?success=1';
+                    } else {
+                        errorDiv.textContent = data.error || 'Bir hata oluştu.';
+                    }
+                }
+            });
+        }
+        if (resendOldCode) {
+            resendOldCode.addEventListener('click', async function() {
+                const new_email = document.getElementById('new_email').value;
+                const res = await fetch('/profile/change-email/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ new_email })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    errorDiv.textContent = 'Kod tekrar gönderildi.';
+                } else {
+                    errorDiv.textContent = data.error || 'Bir hata oluştu.';
+                }
+            });
+        }
+        if (resendNewCode) {
+            resendNewCode.addEventListener('click', async function() {
+                const old_email_code = 'resend'; // backend'de özel kontrol yapılabilir
+                const res = await fetch('/profile/change-email/verify-old', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ old_email_code })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    errorDiv.textContent = 'Kod tekrar gönderildi.';
+                } else {
+                    errorDiv.textContent = data.error || 'Bir hata oluştu.';
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html> 

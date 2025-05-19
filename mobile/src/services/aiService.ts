@@ -1,9 +1,30 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Gemini API için anahtar
 const API_KEY = 'AIzaSyCdk_-u4nUhpJ6cP84xG0NvmFARmZ2FcKY'; 
-const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
+// Farklı model yapılandırmaları
+const API_ENDPOINTS = {
+  // Google AI API Endpoints - En yeni v1 API
+  googleAIv1: {
+    url: 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent',
+    model: 'gemini-pro'
+  },
+  // Alternatif API versiyonu ve endpoint
+  googleAIPreview: {
+    url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent',
+    model: 'gemini-1.5-pro'
+  },
+  // PaLM 2 API endpoint
+  palm2: {
+    url: 'https://generativelanguage.googleapis.com/v1beta/models/text-bison-001:generateText',
+    model: 'text-bison-001'
+  }
+};
+
+// Arayüz tanımlamaları
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
@@ -25,6 +46,7 @@ const AI_INSTRUCTION =
   "Eğer kullanıcının sorusu bu konular dışındaysa, nazikçe yanıt vermeyi reddet ve yalnızca siber güvenlik eğitimi " +
   "ile ilgili konularda yardımcı olabileceğini belirt. Şimdi kullanıcının sorusuna cevap ver: ";
 
+// API servisini uygulaması
 export const aiService = {
   async generateResponse(message: string, history: ChatMessage[] = []): Promise<string> {
     try {
@@ -32,7 +54,7 @@ export const aiService = {
       
       // Gemini API için formatlanmış mesaj geçmişi oluştur
       const formattedHistory = history.map(msg => ({
-        role: msg.role,
+        role: msg.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: msg.content }]
       }));
       
@@ -81,45 +103,44 @@ export const aiService = {
       console.error('AI yanıtı alınırken hata:', error.response?.data || error.message);
       throw new Error('Yapay zeka yanıtı alınamadı. Lütfen daha sonra tekrar deneyin.');
     }
-  },
-  
-  // Mock AI yanıtı (test için)
-  getMockResponse(message: string): Promise<string> {
-    console.log('Mock AI yanıtı oluşturuluyor...');
-    
-    // AI talimatlarına uygun mock yanıtlar (gerçek AI ile değiştirilecek)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        let response = '';
-        const lowerMessage = message.toLowerCase();
-        
-        // Siber güvenlik dışı konu kontrolü (gerçek API'de bunu AI yapacak)
-        if (lowerMessage.includes('hava durumu') || 
-            lowerMessage.includes('film') || 
-            lowerMessage.includes('yemek') || 
-            lowerMessage.includes('spor')) {
-          response = 'Üzgünüm, ben yalnızca siber güvenlik, programlama ve bilişim sistemleri konularında yardımcı olabilirim. Siber güvenlik eğitiminizle ilgili başka bir soru sormak ister misiniz?';
-        } 
-        else if (lowerMessage.includes('ne demek') || lowerMessage.includes('nedir')) {
-          response = 'Bu terim, siber güvenlik alanında önemli bir kavramı ifade eder. Belirtilen kavram hakkında daha fazla bilgi için ders içeriğine göz atabilir veya daha spesifik bir soru sorabilirsiniz.';
-        } else if (lowerMessage.includes('nasıl')) {
-          response = 'Bu işlem genellikle şu adımları içerir: 1) Gerekli araçları hazırlama, 2) Güvenlik kontrollerini yapma, 3) Süreci adım adım takip etme. Daha detaylı bilgi için sorunu daha spesifik olarak iletebilirsin.';
-        } else if (lowerMessage.includes('örnek')) {
-          response = 'Örnek olarak, bir web uygulamasında SQL enjeksiyonu saldırısına karşı koruma için giriş doğrulama ve parametreli sorguların kullanılması verilebilir. Başka bir örnek vermemi ister misin?';
-        } else {
-          response = 'Sorduğun siber güvenlik konusu hakkında detaylı bilgi vermek için elimden geleni yapacağım. Bu alan derinlemesine anlaşılması gereken önemli bir konudur. Daha spesifik bir soru sormak istersen yardımcı olabilirim.';
-        }
-        
-        resolve(response);
-      }, 1500);
-    });
   }
 };
 
-// Local storage üzerinden chat oturumlarını yönetmek için yardımcı fonksiyonlar
+// React Native için async depolama sistemi 
 export const chatStorage = {
+  // Tüm oturumları getir
+  async getSessions(): Promise<ChatSession[]> {
+    try {
+      const sessionsJson = await AsyncStorage.getItem('chatSessions');
+      return sessionsJson ? JSON.parse(sessionsJson) : [];
+    } catch (error) {
+      console.error('Oturumlar alınırken hata:', error);
+      return [];
+    }
+  },
+  
+  // Oturumları kaydet
+  async saveSessions(sessions: ChatSession[]): Promise<void> {
+    try {
+      await AsyncStorage.setItem('chatSessions', JSON.stringify(sessions));
+    } catch (error) {
+      console.error('Oturumlar kaydedilirken hata:', error);
+    }
+  },
+  
+  // Oturum getir
+  async getSession(sessionId: string): Promise<ChatSession | null> {
+    try {
+      const sessionData = await AsyncStorage.getItem(`chat_session_${sessionId}`);
+      return sessionData ? JSON.parse(sessionData) : null;
+    } catch (error) {
+      console.error('Oturum alınırken hata:', error);
+      return null;
+    }
+  },
+  
   // Yeni oturum oluştur
-  createSession(initialMessage: string): ChatSession {
+  async createSession(initialMessage: string): Promise<ChatSession> {
     const sessionId = Date.now().toString();
     const newSession: ChatSession = {
       id: sessionId,
@@ -135,11 +156,17 @@ export const chatStorage = {
       createdAt: Date.now()
     };
     
+    try {
+      await AsyncStorage.setItem(`chat_session_${sessionId}`, JSON.stringify(newSession));
+    } catch (error) {
+      console.error('Oturum kaydedilirken hata:', error);
+    }
+    
     return newSession;
   },
   
   // Mesaj ekle
-  addMessage(session: ChatSession, role: 'user' | 'assistant', content: string): ChatSession {
+  async addMessage(session: ChatSession, role: 'user' | 'assistant', content: string): Promise<ChatSession> {
     const updatedSession = {
       ...session,
       messages: [
@@ -153,6 +180,34 @@ export const chatStorage = {
       ]
     };
     
+    try {
+      await AsyncStorage.setItem(`chat_session_${session.id}`, JSON.stringify(updatedSession));
+    } catch (error) {
+      console.error('Mesaj kaydedilirken hata:', error);
+    }
+    
     return updatedSession;
+  },
+  
+  // Oturum sil
+  async deleteSession(sessionId: string): Promise<void> {
+    try {
+      const sessions = await this.getSessions();
+      const updatedSessions = sessions.filter(session => session.id !== sessionId);
+      await this.saveSessions(updatedSessions);
+    } catch (error) {
+      console.error('Oturum silinirken hata:', error);
+      throw error;
+    }
+  },
+  
+  // Tüm oturumları temizle
+  async clearAllSessions(): Promise<void> {
+    try {
+      await AsyncStorage.removeItem('chatSessions');
+    } catch (error) {
+      console.error('Tüm oturumlar temizlenirken hata:', error);
+      throw error;
+    }
   }
-}; 
+};

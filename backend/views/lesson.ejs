@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="tr" class="bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= lesson.title %> - Siber Güvenlik Akademi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f2ff',
+                        'cyber-dark': '#0a192f',
+                        'cyber-gray': '#1a1a1a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-gray-100 min-h-screen flex flex-col">
+    <%- include('partials/nav') %>
+    
+    <div class="flex flex-1">
+        <!-- Sol Sidebar -->
+        <div class="w-80 bg-cyber-gray border-r border-gray-800 overflow-y-auto">
+            <div class="p-6">
+                <h2 class="text-xl font-semibold text-gray-300 mb-4"><%= module.title %></h2>
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm text-gray-400 mb-1">
+                        <span>İlerleme</span>
+                        <span><%= moduleProgress %>%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-2">
+                        <div class="bg-cyber-blue h-2 rounded-full transition-all duration-300 w-[<%= moduleProgress %>%]"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-1">
+                <% module.lessons.forEach((moduleLesson, index) => { %>
+                    <a href="/lesson/<%= moduleLesson.id %>" 
+                        class="flex items-center p-4 <%= moduleLesson.id === lesson.id ? 'bg-cyber-blue/10 border-l-4 border-cyber-blue' : 'hover:bg-gray-800' %> transition-colors duration-200">
+                        <div class="w-8 h-8 bg-cyber-blue/10 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-sm text-cyber-blue"><%= index + 1 %></span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-300"><%= moduleLesson.title %></h4>
+                            <div class="flex items-center text-xs text-gray-400 mt-1">
+                                <i class="fas fa-clock mr-1"></i>
+                                <%= moduleLesson.duration_minutes %> dakika
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <% if (moduleLesson.status === 'completed') { %>
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            <% } else if (moduleLesson.status === 'in_progress') { %>
+                                <i class="fas fa-play-circle text-cyber-blue"></i>
+                            <% } else { %>
+                                <i class="far fa-circle text-gray-600"></i>
+                            <% } %>
+                        </div>
+                    </a>
+                <% }); %>
+            </div>
+        </div>
+        
+        <!-- Ana İçerik -->
+        <div class="flex-1 overflow-y-auto">
+            <div class="max-w-4xl mx-auto p-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-300 mb-4"><%= lesson.title %></h1>
+                    <div class="flex items-center text-gray-400">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span><%= lesson.duration_minutes %> dakika</span>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 mb-8">
+                    <button class="toggle-btn active px-4 py-2 rounded-lg bg-cyber-blue/10 text-cyber-blue border border-cyber-blue/20 hover:bg-cyber-blue/20 transition-colors duration-200" data-content="video">
+                        <i class="fas fa-video mr-2"></i> Video
+                    </button>
+                    <button class="toggle-btn px-4 py-2 rounded-lg bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700 transition-colors duration-200" data-content="document">
+                        <i class="fas fa-file-alt mr-2"></i> Döküman
+                    </button>
+                </div>
+                
+                <div class="content-container">
+                    <div class="content-section video-section active">
+                        <% if (lesson.video_url) { %>
+                            <div class="relative" style="padding-top: 56.25%">
+                                <video id="lessonVideo" controls class="absolute top-0 left-0 w-full h-full">
+                                    <source src="<%= lesson.video_url %>" type="video/mp4">
+                                    Tarayıcınız video oynatmayı desteklemiyor.
+                                </video>
+                            </div>
+                        <% } else { %>
+                            <div class="text-center py-12 bg-gray-800 rounded-lg">
+                                <i class="fas fa-video-slash text-4xl text-gray-600 mb-4"></i>
+                                <p class="text-gray-400">Bu ders için video bulunmuyor.</p>
+                            </div>
+                        <% } %>
+                    </div>
+                    
+                    <div class="content-section document-section hidden">
+                        <div class="bg-cyber-dark rounded-lg p-6 markdown-body text-gray-100" id="lessonContent">
+                            <% if (lesson.contents && lesson.contents.length > 0) { %>
+                                <% lesson.contents.forEach(content => { %>
+                                    <%- content.content_text %>
+                                <% }); %>
+                            <% } else { %>
+                                <div class="text-center py-12">
+                                    <i class="fas fa-file-alt text-4xl text-gray-600 mb-4"></i>
+                                    <p class="text-gray-400">Bu ders için henüz içerik eklenmemiş.</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mt-8">
+                    <% if (previousLesson) { %>
+                        <a href="/lesson/<%= previousLesson.id %>" 
+                            class="flex items-center px-6 py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Önceki Ders
+                        </a>
+                    <% } else { %>
+                        <div></div>
+                    <% } %>
+                    
+                    <% if (nextLesson) { %>
+                        <a href="/lesson/<%= nextLesson.id %>" 
+                            class="flex items-center px-6 py-3 bg-cyber-blue text-cyber-dark rounded-lg hover:bg-cyber-blue/90 transition-colors duration-200">
+                            Sonraki Ders
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    <% } else { %>
+                        <button id="completeModule" 
+                            class="flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200">
+                            Modülü Tamamla
+                            <i class="fas fa-check ml-2"></i>
+                        </button>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Button -->
+    <button type="button" class="btn btn-primary position-fixed" style="bottom: 20px; right: 20px; z-index: 1000;" data-bs-toggle="modal" data-bs-target="#aiChatModal">
+        <i class="fas fa-robot"></i> AI Asistan
+    </button>
+
+    <!-- AI Question Context Menu -->
+    <div id="aiContextMenu" class="hidden fixed bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-2 z-50">
+        <button class="text-cyber-blue hover:text-cyber-blue/80 px-4 py-2 rounded-lg hover:bg-gray-700 w-full text-left">
+            <i class="fas fa-robot mr-2"></i> AI'a Sor
+        </button>
+    </div>
+
+    <!-- AI Chat Modal -->
+    <div class="modal fade" id="aiChatModal" tabindex="-1" aria-labelledby="aiChatModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-cyber-dark text-gray-100">
+                <div class="modal-header border-gray-700">
+                    <h5 class="modal-title" id="aiChatModalLabel">AI Asistan</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="chatMessages" class="chat-messages">
+                        <!-- Mesajlar buraya dinamik olarak eklenecek -->
+                    </div>
+                    <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                        <div class="spinner-border text-cyber-blue" role="status">
+                            <span class="visually-hidden">Düşünüyor...</span>
+                        </div>
+                        <span class="ms-2">Düşünüyor...</span>
+                    </div>
+                </div>
+                <div class="modal-footer border-gray-700">
+                    <div class="input-group">
+                        <input type="text" id="messageInput" class="form-control bg-cyber-gray border-gray-700 text-gray-100" placeholder="Mesajınızı yazın...">
+                        <button class="btn btn-primary bg-cyber-blue text-cyber-dark border-0" id="sendButton" type="button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // İçerik geçiş butonları
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Aktif buton stilini güncelle
+                toggleButtons.forEach(btn => {
+                    btn.classList.remove('active', 'bg-cyber-blue/10', 'text-cyber-blue', 'border-cyber-blue/20');
+                    btn.classList.add('bg-gray-800', 'text-gray-400', 'border-gray-700');
+                });
+                button.classList.remove('bg-gray-800', 'text-gray-400', 'border-gray-700');
+                button.classList.add('active', 'bg-cyber-blue/10', 'text-cyber-blue', 'border-cyber-blue/20');
+
+                // İlgili içeriği göster
+                const targetContent = button.getAttribute('data-content');
+                contentSections.forEach(section => {
+                    if (section.classList.contains(`${targetContent}-section`)) {
+                        section.classList.remove('hidden');
+                        section.classList.add('active');
+                    } else {
+                        section.classList.add('hidden');
+                        section.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        const video = document.getElementById('lessonVideo');
+        if (video) {
+            const lastPosition = Number('<%= lesson.last_watched_position || 0 %>');
+            video.currentTime = lastPosition;
+
+            setInterval(() => {
+                if (!video.paused) {
+                    fetch('/lesson/<%= lesson.id %>/progress', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            position: video.currentTime
+                        })
+                    });
+                }
+            }, 5000);
+
+            video.addEventListener('ended', () => {
+                fetch('/lesson/<%= lesson.id %>/complete', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const statusIcon = document.querySelector(`a[href="/lesson/<%= lesson.id %>"] .fa-circle`);
+                        if (statusIcon) {
+                            statusIcon.className = 'fas fa-check-circle text-green-500';
+                        }
+                    }
+                });
+            });
+        }
+
+        const completeButton = document.getElementById('completeModule');
+        if (completeButton) {
+            completeButton.addEventListener('click', async () => {
+                try {
+                    const response = await fetch('/module/<%= module.id %>/complete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert('Modül tamamlanırken bir hata oluştu: ' + data.error);
+                    }
+                } catch (error) {
+                    console.error('Modül tamamlama hatası:', error);
+                    alert('Modül tamamlanırken bir hata oluştu');
+                }
+            });
+        }
+
+        // Metin seçimi ve AI soru menüsü
+        const lessonContent = document.getElementById('lessonContent');
+        const aiContextMenu = document.getElementById('aiContextMenu');
+        let selectedText = '';
+
+        lessonContent.addEventListener('mouseup', function(e) {
+            const selection = window.getSelection();
+            selectedText = selection.toString().trim();
+
+            if (selectedText) {
+                // Menüyü konumlandır
+                const rect = selection.getRangeAt(0).getBoundingClientRect();
+                aiContextMenu.style.top = `${rect.bottom + window.scrollY + 10}px`;
+                aiContextMenu.style.left = `${rect.left + window.scrollX}px`;
+                aiContextMenu.classList.remove('hidden');
+            } else {
+                aiContextMenu.classList.add('hidden');
+            }
+        });
+
+        // Menü dışına tıklandığında menüyü kapat
+        document.addEventListener('mousedown', function(e) {
+            if (!aiContextMenu.contains(e.target)) {
+                aiContextMenu.classList.add('hidden');
+            }
+        });
+
+        // AI'a Sor butonuna tıklandığında
+        aiContextMenu.querySelector('button').addEventListener('click', function() {
+            if (selectedText) {
+                // AI chat modalını aç
+                const aiChatModal = new bootstrap.Modal(document.getElementById('aiChatModal'));
+                aiChatModal.show();
+
+                // Seçili metni AI chat'e gönder
+                const messageInput = document.getElementById('messageInput');
+                messageInput.value = `Bu konu hakkında daha fazla bilgi verir misin: "${selectedText}"`;
+                
+                // Mesajı otomatik gönder
+                const sendButton = document.getElementById('sendButton');
+                sendButton.click();
+
+                // Menüyü kapat
+                aiContextMenu.classList.add('hidden');
+            }
+        });
+
+        // AI Chat işlevselliği
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        
+        let chatHistory = [];
+        
+        // Mesaj gönderme fonksiyonu
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // Kullanıcı mesajını ekle
+            addMessage('user', message);
+            messageInput.value = '';
+            
+            // Loading göstergesini göster
+            loadingIndicator.style.display = 'flex';
+            
+            try {
+                const response = await fetch('/api/ai/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message,
+                        history: chatHistory
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Yanıt alınamadı');
+                }
+                
+                const data = await response.json();
+                
+                // AI yanıtını ekle
+                addMessage('ai', data.response);
+                
+                // Sohbet geçmişini güncelle
+                chatHistory.push(
+                    { role: 'user', content: message },
+                    { role: 'assistant', content: data.response }
+                );
+            } catch (error) {
+                console.error('Hata:', error);
+                addMessage('ai', 'Üzgünüm, bir hata oluştu. Lütfen tekrar deneyin.');
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
+        // Mesaj ekleme fonksiyonu
+        function addMessage(role, content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.textContent = content;
+            
+            messageDiv.appendChild(messageContent);
+            chatMessages.appendChild(messageDiv);
+            
+            // Otomatik scroll
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+
+    <style>
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: #0a192f;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            max-width: 80%;
+        }
+
+        .message.user {
+            margin-left: auto;
+        }
+
+        .message.ai {
+            margin-right: auto;
+        }
+
+        .message-content {
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            display: inline-block;
+        }
+
+        .message.user .message-content {
+            background-color: #00f2ff;
+            color: #0a192f;
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .message.ai .message-content {
+            background-color: #1a1a1a;
+            border: 1px solid #2d3748;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            color: #00f2ff;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding: 1rem;
+            background-color: #0a192f;
+        }
+
+        #messageInput {
+            border-radius: 1.5rem 0 0 1.5rem;
+            border-right: none;
+            background-color: #1a1a1a !important;
+            border-color: #2d3748 !important;
+            color: #e2e8f0 !important;
+        }
+
+        #messageInput:focus {
+            box-shadow: none;
+            border-color: #00f2ff !important;
+        }
+
+        #sendButton {
+            border-radius: 0 1.5rem 1.5rem 0;
+            background-color: #00f2ff !important;
+            color: #0a192f !important;
+            border: none !important;
+        }
+
+        #sendButton:hover {
+            background-color: #00d8e3 !important;
+        }
+
+        .modal-content {
+            background-color: #0a192f !important;
+            border: 1px solid #2d3748;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #2d3748;
+        }
+    </style>
+</body>
+</html> 

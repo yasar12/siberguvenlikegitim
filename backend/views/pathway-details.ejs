@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="tr" class="bg-cyber-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pathway.title %> - Siber Güvenlik Akademi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f2ff',
+                        'cyber-dark': '#0a192f',
+                        'cyber-gray': '#1a1a1a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cyber-dark text-gray-100 min-h-screen flex flex-col">
+    <%- include('partials/nav') %>
+    <main class="flex flex-col md:flex-row max-w-7xl mx-auto w-full px-4 py-12 gap-8">
+        <div class="flex-1">
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-cyber-blue mb-2"><%= pathway.title %></h1>
+                <p class="text-gray-300 text-lg mb-4"><%= pathway.description %></p>
+                <div class="flex flex-wrap gap-4 text-sm text-gray-400">
+                    <span class="bg-cyber-gray px-3 py-1 rounded-lg"><i class="fas fa-signal mr-1"></i> Seviye: <%= pathway.level %></span>
+                    <span class="bg-cyber-gray px-3 py-1 rounded-lg"><i class="fas fa-calendar-alt mr-1"></i> Tahmini Süre: <%= pathway.duration_weeks %> Hafta</span>
+                    <% if (userProgress) { %>
+                        <span class="bg-cyber-gray px-3 py-1 rounded-lg"><i class="fas fa-chart-line mr-1"></i> İlerlemeniz: %<%= Number(userProgress.progress_percentage).toFixed(1) %></span>
+                    <% } %>
+                </div>
+            </div>
+            <div class="bg-cyber-gray rounded-xl p-6 mb-8 border border-gray-800">
+                <h2 class="text-2xl font-semibold text-cyber-blue mb-4">Kariyer Bilgileri</h2>
+                <p class="text-gray-300 mb-6">SOC Analistleri, bir organizasyonun güvenlik operasyon merkezinde çalışarak siber tehditleri tespit eder, analiz eder ve yanıt verir. Bu rol, sürekli öğrenme ve gelişim gerektiren dinamik bir pozisyondur.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-cyber-dark rounded-lg p-4 border border-gray-800">
+                        <i class="fas fa-chart-line text-cyber-blue text-2xl mb-2"></i>
+                        <h3 class="font-semibold mb-1">Kariyer Gelişimi</h3>
+                        <p class="text-gray-300 text-sm">Junior SOC Analistinden Senior SOC Analistine ve SOC Takım Liderine kadar yükselme imkanı</p>
+                    </div>
+                    <div class="bg-cyber-dark rounded-lg p-4 border border-gray-800">
+                        <i class="fas fa-money-bill-wave text-cyber-blue text-2xl mb-2"></i>
+                        <h3 class="font-semibold mb-1">Maaş Aralığı</h3>
+                        <p class="text-gray-300 text-sm">15.000₺ - 45.000₺ (Deneyime bağlı olarak)</p>
+                    </div>
+                    <div class="bg-cyber-dark rounded-lg p-4 border border-gray-800">
+                        <i class="fas fa-briefcase text-cyber-blue text-2xl mb-2"></i>
+                        <h3 class="font-semibold mb-1">İş Fırsatları</h3>
+                        <p class="text-gray-300 text-sm">Türkiye'de ve dünyada yüksek talep gören bir pozisyon</p>
+                    </div>
+                </div>
+            </div>
+            <% if (pathway.modules && pathway.modules.length > 0) { %>
+                <% pathway.modules.forEach(module => { %>
+                    <div class="bg-cyber-gray rounded-xl p-6 mb-8 border border-gray-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <% if (module.title.toLowerCase().includes('splunk')) { %>
+                                    <i class="fas fa-database text-cyber-blue text-xl"></i>
+                                <% } else if (module.title.toLowerCase().includes('siem')) { %>
+                                    <i class="fas fa-shield-alt text-cyber-blue text-xl"></i>
+                                <% } else { %>
+                                    <i class="fas fa-tools text-cyber-blue text-xl"></i>
+                                <% } %>
+                                <h3 class="text-xl font-semibold text-gray-100"><%= module.title %></h3>
+                            </div>
+                            <% if (userProgress) { %>
+                                <div class="flex flex-col items-center">
+                                    <span class="text-xs text-gray-400 mb-1">Tamamlanma</span>
+                                    <div class="w-12 h-12 rounded-full border-4 border-cyber-blue flex items-center justify-center text-cyber-blue font-bold">
+                                        <%= Math.round((module.completed_lessons / module.lessons.length) * 100) %>%
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                        <p class="text-gray-300 mb-4"><%= module.description %></p>
+                        <div class="flex flex-wrap gap-4 text-sm text-gray-400 mb-4">
+                            <span><i class="fas fa-book mr-1"></i> <%= module.lessons.length %> Ders</span>
+                            <span><i class="fas fa-clock mr-1"></i> Toplam <%= module.lessons.reduce((acc, lesson) => acc + lesson.duration_minutes, 0) %> dakika</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <% module.lessons.forEach((lesson, index) => { %>
+                                <div class="bg-cyber-dark rounded-lg p-4 border border-gray-800 flex items-center justify-between">
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-cyber-blue font-bold">#<%= index + 1 %></span>
+                                            <h4 class="text-lg font-semibold text-gray-100"><%= lesson.title %></h4>
+                                        </div>
+                                        <p class="text-gray-300 text-sm mb-2"><%= lesson.description %></p>
+                                        <div class="flex flex-wrap gap-3 text-xs text-gray-400">
+                                            <span><i class="far fa-clock mr-1"></i> <%= lesson.duration_minutes %> dakika</span>
+                                            <% if (userProgress) { %>
+                                                <span class="lesson-status <%= lesson.status %>">
+                                                    <% if (lesson.status === 'completed') { %>
+                                                        <i class="fas fa-check-circle text-green-500"></i> Tamamlandı
+                                                    <% } else if (lesson.status === 'in_progress') { %>
+                                                        <i class="fas fa-play-circle text-cyber-blue"></i> Devam Ediyor
+                                                    <% } else { %>
+                                                        <i class="far fa-circle text-gray-600"></i> Başlanmadı
+                                                    <% } %>
+                                                </span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <% if (userProgress) { %>
+                                        <a href="/lesson/<%= lesson.id %>" class="ml-4 px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-semibold hover:bg-cyber-blue/90 transition-colors duration-200">
+                                            <% if (lesson.status === 'completed') { %>
+                                                <i class="fas fa-redo"></i> Tekrar İzle
+                                            <% } else if (lesson.status === 'in_progress') { %>
+                                                <i class="fas fa-play"></i> Devam Et
+                                            <% } else { %>
+                                                <i class="fas fa-play"></i> Başla
+                                            <% } %>
+                                        </a>
+                                    <% } %>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+        <aside class="w-full md:w-80 flex-shrink-0 md:ml-8">
+            <div class="bg-cyber-gray rounded-xl p-6 border border-gray-800 mb-8">
+                <% if (!userProgress) { %>
+                    <h3 class="text-xl font-semibold text-cyber-blue mb-4">Kariyer İstatistikleri</h3>
+                    <div class="space-y-2 mb-6">
+                        <div class="flex justify-between text-gray-300"><span>Toplam Modül</span><span><%= pathway.modules.length %></span></div>
+                        <div class="flex justify-between text-gray-300"><span>Toplam Ders</span><span><%= pathway.modules.reduce((acc, module) => acc + module.lessons.length, 0) %></span></div>
+                        <div class="flex justify-between text-gray-300"><span>Toplam Süre</span><span><%= Math.round(pathway.modules.reduce((acc, module) => acc + module.lessons.reduce((acc2, lesson) => acc2 + lesson.duration_minutes, 0), 0) / 60) %> saat</span></div>
+                    </div>
+                    <button class="w-full py-3 px-4 bg-cyber-blue text-cyber-dark rounded-lg font-semibold hover:bg-cyber-blue/90 transition-colors duration-200 mb-6" onclick="enrollPathway(<%= pathway.id %>)">
+                        <i class="fas fa-graduation-cap"></i> Kariyerime Başla
+                    </button>
+                    <div class="bg-cyber-dark rounded-lg p-4 border border-gray-800">
+                        <h3 class="text-lg font-semibold text-cyber-blue mb-2">Önerilen Ön Koşullar</h3>
+                        <ul class="list-disc list-inside text-gray-300 text-sm">
+                            <li>Temel ağ bilgisi</li>
+                            <li>Linux temel komutları</li>
+                            <li>Siber güvenlik temelleri</li>
+                            <li>İngilizce okuma-anlama</li>
+                        </ul>
+                    </div>
+                <% } else { %>
+                    <div class="bg-cyber-dark rounded-lg p-4 border border-gray-800 mb-6">
+                        <h3 class="text-lg font-semibold text-cyber-blue mb-2">Genel İlerlemeniz</h3>
+                        <div class="w-full bg-gray-800 rounded-full h-4 mb-2">
+                            <div class="bg-cyber-blue h-4 rounded-full transition-all duration-300" style="width: <%= userProgress.progress_percentage %>%"></div>
+                        </div>
+                        <p class="text-gray-300 text-sm">%<%= Number(userProgress.progress_percentage).toFixed(1) %> tamamlandı</p>
+                    </div>
+                <% } %>
+            </div>
+        </aside>
+    </main>
+    <footer class="bg-cyber-dark border-t border-gray-800 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Siber Güvenlik Akademi. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        async function enrollPathway(pathwayId) {
+            try {
+                const response = await fetch(`/pathway/${pathwayId}/enroll`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Kariyer yoluna başarıyla kayıt oldunuz!');
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    alert(data.message || 'Kayıt olurken bir hata oluştu.');
+                }
+            } catch (error) {
+                console.error('Kayıt hatası:', error);
+                alert('Kayıt olurken bir hata oluştu.');
+            }
+        }
+    </script>
+</body>
+</html> 

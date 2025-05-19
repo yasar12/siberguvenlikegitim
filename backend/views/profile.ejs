@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr" class="bg-cyber-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilim - Siber Güvenlik Akademi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f2ff',
+                        'cyber-dark': '#0a192f',
+                        'cyber-gray': '#1a1a1a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cyber-dark text-gray-100 min-h-screen flex flex-col">
+    <%- include('partials/nav') %>
+    <main class="flex flex-col items-center justify-center flex-1 py-12 px-4">
+        <div class="bg-cyber-gray rounded-xl p-8 border border-gray-800 shadow-xl w-full max-w-md">
+            <div class="flex flex-col items-center mb-8">
+                <% if (user.profile_image) { %>
+                    <img src="<%= user.profile_image %>" alt="Profil Fotoğrafı" class="w-24 h-24 rounded-full object-cover border-4 border-cyber-blue mb-4" />
+                <% } else { %>
+                    <div class="w-24 h-24 bg-cyber-blue/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-user-shield text-5xl text-cyber-blue"></i>
+                    </div>
+                <% } %>
+                <h1 class="text-2xl font-bold text-cyber-blue mb-1"><%= user.full_name %></h1>
+                <p class="text-gray-400">@<%= user.email %></p>
+                <div class="mt-4 text-center">
+                    <% if (user.bio) { %>
+                        <p class="text-gray-200 italic">"<%= user.bio %>"</p>
+                    <% } else { %>
+                        <p class="text-gray-500 italic">Henüz biyografi eklenmemiş.</p>
+                    <% } %>
+                </div>
+            </div>
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-200 mb-4">Bilgilerim</h2>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3"><i class="fas fa-envelope text-cyber-blue"></i> <span class="text-gray-200"><%= user.email %></span></li>
+                    <li class="flex items-center gap-3"><i class="fas fa-calendar-alt text-cyber-blue"></i> <span class="text-gray-200">Kayıt Tarihi: <%= user.created_at ? new Date(user.created_at).toLocaleDateString('tr-TR') : '-' %></span></li>
+                </ul>
+            </div>
+            <div class="flex justify-end">
+                <a href="/profile/edit" class="px-4 py-2 bg-cyber-blue text-cyber-dark rounded-lg font-semibold hover:bg-cyber-blue/90 transition-colors duration-200"><i class="fas fa-edit mr-2"></i> Profili Düzenle</a>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-cyber-dark border-t border-gray-800 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 Siber Güvenlik Akademi. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+    <% /* Toast notification for successful save */ %>
+    <div id="toast-success" class="fixed bottom-6 right-6 z-50 hidden bg-cyber-gray border border-cyber-blue text-cyber-blue px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 transition-opacity duration-500">
+        <i class="fas fa-check-circle text-2xl"></i>
+        <span class="font-semibold">Kaydedildi</span>
+    </div>
+    <script>
+        // Show toast if ?success=1 in URL
+        if (window.location.search.includes('success=1')) {
+            const toast = document.getElementById('toast-success');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => toast.classList.add('hidden'), 500);
+            }, 2500);
+        }
+    </script>
+</body>
+</html> 

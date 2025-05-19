@@ -31,9 +31,12 @@ const AIChat: React.FC<AIChatProps> = ({ isVisible, onClose, initialMessage = ''
   // Başlangıç mesajını işle ve yeni oturum oluştur
   useEffect(() => {
     if (isVisible && initialMessage && !session) {
-      const newSession = chatStorage.createSession(initialMessage);
-      setSession(newSession);
-      handleInitialMessage(newSession);
+      const initializeSession = async () => {
+        const newSession = await chatStorage.createSession(initialMessage);
+        setSession(newSession);
+        handleInitialMessage(newSession);
+      };
+      initializeSession();
     } else if (!isVisible) {
       // Modal kapandığında state sıfırla
       setSession(null);
@@ -45,18 +48,16 @@ const AIChat: React.FC<AIChatProps> = ({ isVisible, onClose, initialMessage = ''
   const handleInitialMessage = async (newSession: ChatSession) => {
     setIsLoading(true);
     try {
-      // Geliştirme aşamasında mock yanıt kullanıyoruz, gerçek API için generateResponse kullanılacak
-      // const aiResponse = await aiService.generateResponse(initialMessage);
-      const aiResponse = await aiService.getMockResponse(initialMessage);
+      const aiResponse = await aiService.generateResponse(initialMessage);
       
-      const updatedSession = chatStorage.addMessage(newSession, 'assistant', aiResponse);
+      const updatedSession = await chatStorage.addMessage(newSession, 'assistant', aiResponse);
       setSession(updatedSession);
     } catch (error) {
       console.error('AI yanıtı alınırken hata oluştu:', error);
       
       if (newSession) {
         const errorMessage = 'Üzgünüm, yanıt oluşturulurken bir hata meydana geldi. Lütfen tekrar deneyin.';
-        const updatedSession = chatStorage.addMessage(newSession, 'assistant', errorMessage);
+        const updatedSession = await chatStorage.addMessage(newSession, 'assistant', errorMessage);
         setSession(updatedSession);
       }
     } finally {
@@ -73,7 +74,7 @@ const AIChat: React.FC<AIChatProps> = ({ isVisible, onClose, initialMessage = ''
     setInputText('');
     Keyboard.dismiss();
     
-    const sessionWithUserMessage = chatStorage.addMessage(session, 'user', userMessage);
+    const sessionWithUserMessage = await chatStorage.addMessage(session, 'user', userMessage);
     setSession(sessionWithUserMessage);
     
     // Otomatik scroll
@@ -84,16 +85,12 @@ const AIChat: React.FC<AIChatProps> = ({ isVisible, onClose, initialMessage = ''
     // AI yanıtını al
     setIsLoading(true);
     try {
-      // Gerçek API için
-      // const aiResponse = await aiService.generateResponse(
-      //   userMessage, 
-      //   sessionWithUserMessage.messages
-      // );
+      const aiResponse = await aiService.generateResponse(
+        userMessage, 
+        sessionWithUserMessage.messages
+      );
       
-      // Mock API için
-      const aiResponse = await aiService.getMockResponse(userMessage);
-      
-      const updatedSession = chatStorage.addMessage(sessionWithUserMessage, 'assistant', aiResponse);
+      const updatedSession = await chatStorage.addMessage(sessionWithUserMessage, 'assistant', aiResponse);
       setSession(updatedSession);
       
       // Otomatik scroll
@@ -104,7 +101,7 @@ const AIChat: React.FC<AIChatProps> = ({ isVisible, onClose, initialMessage = ''
       console.error('AI yanıtı alınırken hata oluştu:', error);
       
       const errorMessage = 'Üzgünüm, yanıt oluşturulurken bir hata meydana geldi. Lütfen tekrar deneyin.';
-      const updatedSession = chatStorage.addMessage(sessionWithUserMessage, 'assistant', errorMessage);
+      const updatedSession = await chatStorage.addMessage(sessionWithUserMessage, 'assistant', errorMessage);
       setSession(updatedSession);
     } finally {
       setIsLoading(false);
